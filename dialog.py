@@ -11,17 +11,19 @@ class Dialog(QDialog):
         ## veritabanı ve arayüz dosyaları çağırılıyor
         self.vt = Veritabani(os.getcwd()+r"\IEDB.db")
         self.pencere = uic.loadUi(os.getcwd()+r"\sozluk.ui")
+        ## Arayüzdeki Nesnelere Fonksiyonlar Atanıyor
         self.pencere.btIptal.clicked.connect(self.pencere.close)
         self.pencere.btKaydet.clicked.connect(self.KaydetSozluk)
-        # self.pencere.lstSozluk.itemDoubleClicked.connect(self.SecimSozluk)
-        self.pencere.show()
-
+        self.pencere.lstSozluk.itemDoubleClicked.connect(self.SecimSozluk)
+        ## Arayüzdeki nesneler veritabanından dolduruluyor
+        self.InitUISozluk()
+        self.TabloDoldurSozluk()
     
     def TabloDoldurSozluk(self):
         self.pencere.lstSozluk.clear()
         self.liste = self.vt.SozlukGoruntule()
         self.pencere.lstSozluk.setHorizontalHeaderLabels(("ID", "SOZLUK_ID","SOZLUK_ADI","TABLO_ID"))
-        self.pencere.lstSozluk.setRowCount(15)
+        self.pencere.lstSozluk.setRowCount(8)
         self.pencere.lstSozluk.setColumnCount(4)
         satir = 0
         for a,b,c,d in self.liste:
@@ -31,15 +33,17 @@ class Dialog(QDialog):
             self.pencere.lstSozluk.setItem(satir, 3, QTableWidgetItem(str(d)))
             satir += 1
             
-    # def SecimSozluk(self):
-    #     # print(self.liste[self.pencere.lstSozluk.currentRow()])
-    #     sozlukID = str(self.liste[self.pencere.lstSozluk.currentRow()][3])
-    #     sozlukadi = str(self.liste[self.pencere.lstSozluk.currentRow()][1])
-    #     tabloID = = str(self.liste[self.pencere.lstSozluk.currentRow()][2])
-    #     self.pencere.txtID.setText(sozlukID)
-    #     self.pencere.txtAd.setText(sozlukadi)
-    #     self.pencere.txtTablo.setText(tabloID)
-    #     self.pencere.cmbKalem.setCurrentText(self.liste[self.pencere.lstSozluk.currentRow()][1])
+    def SecimSozluk(self):
+        # print(self.liste[self.pencere.lstSozluk.currentRow()])
+        ID = str(self.liste[self.pencere.lstSozluk.currentRow()][0])
+        sozlukID = str(self.liste[self.pencere.lstSozluk.currentRow()][1])
+        sozlukadi = str(self.liste[self.pencere.lstSozluk.currentRow()][2])
+        tabloID = str(self.liste[self.pencere.lstSozluk.currentRow()][3])
+        self.pencere.lblKayit.setText(ID)
+        self.pencere.txtID.setText(sozlukID)
+        self.pencere.txtAd.setText(sozlukadi)
+        self.pencere.txtTablo.setText(tabloID)
+       
 
 
     def MesajSozluk(self,icon,baslik,metin):
@@ -63,11 +67,12 @@ class Dialog(QDialog):
 
 
     def KaydetSozluk(self):
+        ID = self.pencere.lblKayit.text()
         sozlukID = self.pencere.txtID.text()
         sozlukadi = self.pencere.txtAd.text()
         tabloID = self.pencere.txtTablo.text()
      
-        if ID == 0:
+        if ID == "":
             sonuc = self.vt.VeriEkleSozluk(sozlukID,sozlukadi,tabloID)
         else:
             sonuc = self.vt.VeriGuncelleSozluk(sozlukID,sozlukadi,tabloID,ID)
