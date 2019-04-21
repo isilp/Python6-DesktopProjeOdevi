@@ -67,15 +67,12 @@ class Dialog(QDialog):
 
 
     def KaydetSozluk(self):
-        ID = self.pencere.lblKayit.text()
+        # ID = self.pencere.lblKayit.text()
         sozlukID = self.pencere.txtID.text()
         sozlukadi = self.pencere.txtAd.text()
         tabloID = self.pencere.txtTablo.text()
      
-        if ID == "":
-            sonuc = self.vt.VeriEkleSozluk(sozlukID,sozlukadi,tabloID)
-        else:
-            sonuc = self.vt.VeriGuncelleSozluk(sozlukID,sozlukadi,tabloID,ID)
+        sonuc = self.vt.VeriEkleSozluk(sozlukID,sozlukadi,tabloID)
 
         if sonuc == "1":
             self.MesajSozluk(1,"Bilgi","Başarıyla Kaydedildi")
