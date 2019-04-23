@@ -102,11 +102,9 @@ class Veritabani:
         try:
             officeboy = self.veritabaniAc()
             officeboy.execute("""
-            SELECT
-            *
-            FROM HSP_SOZLUK
-            """
-            )
+            SELECT * FROM HSP_SOZLUK
+            WHERE 1 = 1
+            """)
             return officeboy.fetchall()
         except Exception as Hata:
             print("Hata Mesajı:",Hata)
@@ -122,7 +120,7 @@ class Veritabani:
             SOZLUK_ADI,
             TABLO_ID)
             values
-            ({},{},{})
+            ({},'{}',{})
             """.format(sozlukID,sozlukadi,tabloID)
             )
             self.db.commit()
@@ -150,5 +148,5 @@ class Veritabani:
             self.db.close()
 
 if __name__ == "__main__":
-    vt = Veritabani(r"D:\İbrahim EDİZ\DesktopProje\IEDB.db")
+    vt = Veritabani(os.getcwd()+r"\IEDB.db")
     vt.SozlukListele(1)

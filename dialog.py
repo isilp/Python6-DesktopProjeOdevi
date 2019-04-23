@@ -23,7 +23,7 @@ class Dialog(QDialog):
         self.pencere.lstSozluk.clear()
         self.liste = self.vt.SozlukGoruntule()
         self.pencere.lstSozluk.setHorizontalHeaderLabels(("ID", "SOZLUK_ID","SOZLUK_ADI","TABLO_ID"))
-        self.pencere.lstSozluk.setRowCount(8)
+        self.pencere.lstSozluk.setRowCount(15)
         self.pencere.lstSozluk.setColumnCount(4)
         satir = 0
         for a,b,c,d in self.liste:
